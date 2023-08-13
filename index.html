@@ -1,0 +1,21 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG to PNG Converter</title>
+    <style>
+        #downloadButton { display: none; }
+        #preview { margin-top: 15px; width: 300px; height: 300px; border: 1px solid #000; }
+    </style>
+</head>
+<body>
+    <input type="file" id="uploadButton" accept="image/svg+xml" onchange="previewSVG()" />
+    <button id="convertButton" onclick="convertSvgToPng()">Convert</button>
+    <a id="downloadButton" download="converted.png">Download PNG</a>
+    <canvas id="preview"></canvas> <!-- Preview area -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.6.0/fabric.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
