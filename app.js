@@ -6,7 +6,11 @@ function previewSVG() {
     const reader = new FileReader();
     reader.onload = function(event) {
         svgFile = event.target.result;
-        document.getElementById('preview').innerHTML = svgFile; // Displaying the SVG
+        const canvas = new fabric.Canvas('preview');
+        fabric.loadSVGFromString(svgFile, function(objects, options) {
+            const obj = fabric.util.groupSVGElements(objects, options);
+            canvas.add(obj).renderAll();
+        });
     };
     reader.readAsText(fileInput.files[0]);
 }
@@ -17,10 +21,12 @@ function convertSvgToPng() {
         return;
     }
 
-    const canvas = document.createElement('canvas');
-    canvg.default(canvas, svgFile);
-
-    const pngData = canvas.toDataURL('image/png');
-    document.getElementById('downloadButton').href = pngData;
-    document.getElementById('downloadButton').style.display = 'block';
+    const canvas = new fabric.Canvas('preview');
+    fabric.loadSVGFromString(svgFile, function(objects, options) {
+        const obj = fabric.util.groupSVGElements(objects, options);
+        canvas.add(obj).renderAll();
+        const pngData = canvas.toDataURL('image/png');
+        document.getElementById('downloadButton').href = pngData;
+        document.getElementById('downloadButton').style.display = 'block';
+    });
 }
