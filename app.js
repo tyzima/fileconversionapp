@@ -1,13 +1,15 @@
 
-document.getElementById('uploadButton').addEventListener('change', function(e) {
+let svgFile;
+
+function previewSVG() {
+    const fileInput = document.getElementById('uploadButton');
     const reader = new FileReader();
     reader.onload = function(event) {
         svgFile = event.target.result;
+        document.getElementById('preview').innerHTML = svgFile; // Displaying the SVG
     };
-    reader.readAsText(e.target.files[0]);
-});
-
-let svgFile;
+    reader.readAsText(fileInput.files[0]);
+}
 
 function convertSvgToPng() {
     if (!svgFile) {
