@@ -1,38 +1,34 @@
-document.getElementById("generateBtn").addEventListener("click", async function() {
-    const fileInput = document.getElementById("logo");
-    const colorsInput = document.getElementById("colors");
-    const uploadedImg = document.getElementById("uploadedImg");
-    const svgOutput = document.getElementById("svgOutput");
+document.addEventListener("DOMContentLoaded", function() {
+    const generateBtn = document.getElementById("generateBtn");
+    const svgResult = document.getElementById("svgResult");
+    const uploadInput = document.getElementById("uploadInput");
+    const colorInput = document.getElementById("colorInput");
 
-    if (fileInput.files.length === 0) {
-        alert("Please upload an image.");
-        return;
-    }
+    generateBtn.addEventListener('click', function() {
+        const file = uploadInput.files[0];
+        const colors = colorInput.value;
 
-    if (!colorsInput.value) {
-        alert("Please specify the number of colors.");
-        return;
-    }
+        if (!file || !colors) {
+            alert("Please select an image and specify the number of colors.");
+            return;
+        }
 
-    const image = fileInput.files[0];
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("max_colors", colorsInput.value);
+        const formData = new FormData();
+        formData.append('image', file);
 
-    const response = await fetch("https://api.vectorizer.io/v1/images", {
-        method: "POST",
-        headers: {
-            'Authorization': `Bearer ${process.env.VECTORIZER_API_KEY}`
-        },
-        body: formData
+        fetch('https://api.vectorizer.io/image-vectorize/v1/vectors', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${process.env.VECTORIZER_API_KEY}`
+            },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            svgResult.innerHTML = data.svg;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
-
-    const data = await response.json();
-
-    if (data.success) {
-        uploadedImg.src = URL.createObjectURL(image);
-        svgOutput.innerHTML = data.svg;
-    } else {
-        alert("Error vectorizing the logo. Please try again.");
-    }
 });
