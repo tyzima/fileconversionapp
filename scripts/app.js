@@ -1,34 +1,41 @@
 document.addEventListener("DOMContentLoaded", function() {
-    const generateBtn = document.getElementById("generateBtn");
-    const svgResult = document.getElementById("svgResult");
-    const uploadInput = document.getElementById("uploadInput");
-    const colorInput = document.getElementById("colorInput");
+    let generateBtn = document.getElementById("generateBtn");
 
-    generateBtn.addEventListener('click', function() {
-        const file = uploadInput.files[0];
-        const colors = colorInput.value;
+    if (generateBtn) {
+        generateBtn.addEventListener("click", function() {
+            let imageInput = document.getElementById("imageInput");
+            let colorInput = document.getElementById("colorsInput");
+            let outputArea = document.getElementById("outputArea");
+            
+            if (imageInput.files.length === 0) {
+                alert("Please upload an image first!");
+                return;
+            }
 
-        if (!file || !colors) {
-            alert("Please select an image and specify the number of colors.");
-            return;
-        }
+            if (colorInput.value === "") {
+                alert("Please specify the number of colors!");
+                return;
+            }
 
-        const formData = new FormData();
-        formData.append('image', file);
+            let formData = new FormData();
+            formData.append("image", imageInput.files[0]);
+            formData.append("max_colors", colorInput.value);
 
-        fetch('https://api.vectorizer.io/image-vectorize/v1/vectors', {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${process.env.VECTORIZER_API_KEY}`
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            svgResult.innerHTML = data.svg;
-        })
-        .catch(error => {
-            console.error('Error:', error);
+            fetch("https://api.vectorizer.io/v1/image-to-svg", {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${process.env.VECTORIZER_API_KEY}`
+                },
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                outputArea.innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error fetching data:", error);
+                alert("An error occurred. Please try again later.");
+            });
         });
-    });
+    }
 });
