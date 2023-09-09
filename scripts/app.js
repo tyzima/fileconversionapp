@@ -1,50 +1,48 @@
-console.log("Script loaded.");
+document.addEventListener("DOMContentLoaded", function() {
+    console.log("Script Loaded");
 
-let generateBtn = document.getElementById("generateBtn");
+    const generateBtn = document.getElementById("generateBtn");
 
-if (generateBtn) {
-    console.log("Button found.");
-    
-    generateBtn.addEventListener("click", function() {
-        console.log("Button clicked.");
+    if (!generateBtn) {
+        console.log("Button Not Found");
+        return;
+    }
 
-        let imageInput = document.getElementById("imageInput");
-        let colorInput = document.getElementById("colorsInput");
-        let outputArea = document.getElementById("outputArea");
-        
-        if (imageInput.files.length === 0) {
-            console.log("No image uploaded.");
-            alert("Please upload an image first!");
+    generateBtn.addEventListener("click", async () => {
+        console.log("Button Clicked");
+
+        const imageUrl = document.getElementById("imageUrl").value;
+        const colors = document.getElementById("colors").value;
+
+        if (!imageUrl) {
+            alert("Please provide an image URL.");
             return;
         }
 
-        if (colorInput.value === "") {
-            console.log("Colors not specified.");
-            alert("Please specify the number of colors!");
+        if (!colors || isNaN(colors) || colors <= 0) {
+            alert("Please provide a valid number of colors.");
             return;
         }
 
-        let formData = new FormData();
-        formData.append("image", imageInput.files[0]);
-        formData.append("max_colors", colorInput.value);
-
-        fetch("https://api.vectorizer.io/v1/image-to-svg", {
-            method: "POST",
+        const response = await fetch('https://api.vectorizer.io/v1/vectorize', {
+            method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${process.env.VECTORIZER_API_KEY}`
             },
-            body: formData
-        })
-        .then(response => response.text())
-        .then(data => {
-            console.log("Data received:", data);
-            outputArea.innerHTML = data;
-        })
-        .catch(error => {
-            console.error("Error fetching data:", error);
-            alert("An error occurred. Please try again later.");
+            body: JSON.stringify({
+                url: imageUrl,
+                max_colors: colors
+            })
         });
+
+        if (response.status !== 200) {
+            alert("Error vectorizing the image.");
+            return;
+        }
+
+        const data = await response.json();
+        const svgContainer = document.getElementById("svgContainer");
+        svgContainer.innerHTML = data.svg;
     });
-} else {
-    console.log("Button not found.");
-}
+});
