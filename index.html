@@ -1,32 +1,172 @@
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vectorizer App</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <title>SVG Approximate Coverage Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 2rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .rounded {
+            border-radius: 15px;
+        }
+
+        button, input[type="file"], .dropzone {
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .dropzone {
+            border: 2px dashed #ccc;
+            width: 300px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .preview {
+            width: 300px;
+            margin-top: 1rem;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Vectorizer App</h1>
-        <div class="upload-section">
-            <label for="image-upload">Logo to be Vectorized:</label>
-            <input type="file" id="image-upload" accept="image/*">
-            <label for="color-count">Number of Colors in Logo:</label>
-            <input type="number" id="color-count" min="1">
-            <button id="generate-btn">Generate</button>
-        </div>
-        <div class="output-section">
-            <h2>Original Image:</h2>
-            <img id="original-image" src="" alt="Original Image">
-            <h2>Vectorized SVG:</h2>
-            <div id="svg-output"></div>
-        </div>
+<div class="container">
+    <h1>SVG Approximate Coverage Calculator</h1>
+    <div id="dropzone" class="dropzone rounded">
+        Drag & Drop SVG Here
     </div>
-    <script src="scripts/app.js"></script>
-</body>
+    <input type="file" id="svgInput" class="rounded" accept=".svg" style="display: none;">
+    <h5 id="stitchCount"></h5>
+    <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
+        <div>
+        <label for="widthSlider">Width: <span id="widthValue">3.5</span> inches</label>
+        <input type="range" id="widthSlider" min="1" max="7" value="3.5" step="0.1" onchange="updateWidthValue()">
+    </div>
+    <button class="rounded" onclick="calculateCoverage()">Calculate Coverage</button>
+    <div id="result" class="rounded" style="margin-top: 1rem;"></div>
+    <div id="proportionalSize" class="rounded" style="margin-top: 1rem;"></div>
+</div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const dropzone = document.getElementById('dropzone');
+    const svgInput = document.getElementById('svgInput');
+    const svgPreview = document.getElementById('svgPreview');
+    const resultDiv = document.getElementById('result');
+    const widthValueSpan = document.getElementById('widthValue');
+    const proportionalSizeDiv = document.getElementById('proportionalSize');
+
+    // Drag and Drop Handlers
+    dropzone.addEventListener('click', () => {
+        svgInput.click();
+    });
+
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.style.backgroundColor = '#f0f0f0';
+    });
+
+    dropzone.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        dropzone.style.backgroundColor = 'transparent';
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.style.backgroundColor = 'transparent';
+        if (e.dataTransfer.files.length && e.dataTransfer.files[0].type === 'image/svg+xml') {
+            svgInput.files = e.dataTransfer.files;
+            displaySVGPreview();
+        }
+    });
+
+    svgInput.addEventListener('change', displaySVGPreview);
+
+    // Display SVG Preview
+    function displaySVGPreview() {
+        const file = svgInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                svgPreview.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    // Update Width Value from Slider
+    function updateWidthValue() {
+        const widthSlider = document.getElementById('widthSlider');
+        widthValueSpan.textContent = widthSlider.value;
+    }
+
+    window.updateWidthValue = updateWidthValue; // Expose to global scope for inline event
+
+    // Calculate Coverage
+    function calculateCoverage() {
+        if (!svgPreview.src) {
+            resultDiv.textContent = 'Please provide an SVG file!';
+            return;
+        }
+
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+        img.crossOrigin = "anonymous";  // Handle CORS
+        img.src = svgPreview.src;
+        
+        img.onload = function() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+            
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imgData.data;
+            
+            let nonTransparentPixelCount = 0;
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i + 3] !== 0) {
+                    nonTransparentPixelCount++;
+                }
+            }
+
+            const totalPixels = canvas.width * canvas.height;
+            const coverage = (nonTransparentPixelCount / totalPixels) * 100;
+
+            const widthInInches = parseFloat(widthValueSpan.textContent);
+            const proportionalHeight = (widthInInches / img.width) * img.height;
+            const squareInchesCovered = (coverage / 100) * widthInInches * proportionalHeight;
+            const estimatedStitchCount = squareInchesCovered * 2000;
+
+            document.getElementById('stitchCount').textContent = `Estimated Stitch Count: ${Math.round(estimatedStitchCount)}`;
+            resultDiv.textContent = `Approximate Coverage: ${coverage.toFixed(2)}%`;
+            proportionalSizeDiv.textContent = `Proportional Size: ${widthInInches.toFixed(2)}" x ${proportionalHeight.toFixed(2)}"`;
+        };
+    }
+
+    window.calculateCoverage = calculateCoverage; // Expose to global scope for inline event
+
+    // Load SVG from URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const svgUrl = urlParams.get('svg');
+    if (svgUrl) {
+        svgPreview.src = svgUrl;
+    }
+});
+
+</script>
+</body>
 </html>
