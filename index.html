@@ -44,7 +44,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>SVG Approximate Coverage Calculator</h1>
+    <h1>Stitch Count Estimator</h1>
     <input type="file" id="svgInput" class="rounded" accept=".svg" style="display: none;">
     <h5 id="stitchCount"></h5>
     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
@@ -152,8 +152,8 @@
             const estimatedStitchCount = squareInchesCovered * 2500;
 
             document.getElementById('stitchCount').textContent = `Estimated Stitch Count: ${Math.round(estimatedStitchCount)}`;
-            resultDiv.textContent = `Approximate Coverage: ${coverage.toFixed(2)}%`;
-            proportionalSizeDiv.textContent = `Proportional Size: ${widthInInches.toFixed(2)}" x ${proportionalHeight.toFixed(2)}"`;
+            resultDiv.textContent = `Coverage: ${coverage.toFixed(2)}%`;
+            proportionalSizeDiv.textContent = `Size: ${widthInInches.toFixed(2)}" x ${proportionalHeight.toFixed(2)}"`;
         };
     }
 
