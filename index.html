@@ -40,19 +40,11 @@
             width: 300px;
             margin-top: 1rem;
         }
-
-
-        #svgPreview {
-    display: none;
-}
-
-
     </style>
 </head>
 <body>
 <div class="container">
     <h1>SVG Approximate Coverage Calculator</h1>
-    
     <input type="file" id="svgInput" class="rounded" accept=".svg" style="display: none;">
     <h5 id="stitchCount"></h5>
     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
@@ -111,13 +103,6 @@
             reader.onload = function(event) {
                 svgPreview.src = event.target.result;
             };
-            reader.onload = function(event) {
-    svgPreview.src = event.target.result;
-    svgPreview.onload = function() {
-        svgPreview.style.display = "block";
-    };
-};
-
             reader.readAsDataURL(file);
         }
     }
@@ -164,7 +149,7 @@
             const widthInInches = parseFloat(widthValueSpan.textContent);
             const proportionalHeight = (widthInInches / img.width) * img.height;
             const squareInchesCovered = (coverage / 100) * widthInInches * proportionalHeight;
-            const estimatedStitchCount = squareInchesCovered * 2550;
+            const estimatedStitchCount = squareInchesCovered * 2000;
 
             document.getElementById('stitchCount').textContent = `Estimated Stitch Count: ${Math.round(estimatedStitchCount)}`;
             resultDiv.textContent = `Approximate Coverage: ${coverage.toFixed(2)}%`;
