@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVG Approximate Coverage Calculator</title>
+    <title>Stitch Count Calculator</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body {
@@ -149,7 +149,7 @@
             const widthInInches = parseFloat(widthValueSpan.textContent);
             const proportionalHeight = (widthInInches / img.width) * img.height;
             const squareInchesCovered = (coverage / 100) * widthInInches * proportionalHeight;
-            const estimatedStitchCount = squareInchesCovered * 2000;
+            const estimatedStitchCount = squareInchesCovered * 2500;
 
             document.getElementById('stitchCount').textContent = `Estimated Stitch Count: ${Math.round(estimatedStitchCount)}`;
             resultDiv.textContent = `Approximate Coverage: ${coverage.toFixed(2)}%`;
