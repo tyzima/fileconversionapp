@@ -302,7 +302,7 @@ h5:not(:empty) {
     const container = document.getElementById('priceTableContainer');
     let prices = [];
 
-    if (stitchCount >= 8000 && stitchCount <= 11999) {
+    if (stitchCount >= 0 && stitchCount <= 11999) {
         prices = ["$8.75", "$7.50", "$7.00", "$6.00", "$5.50", "$5.00"];
     } else if (stitchCount >= 12000 && stitchCount <= 15999) {
         prices = ["$12.25", "$10.75", "$10.00", "$9.00", "$8.00", "$7.25"];
