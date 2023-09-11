@@ -131,6 +131,34 @@ h5:not(:empty) {
         #stitchCount {
     padding: 20px;
 }
+.hidden {
+    display: none;
+}
+
+#priceTableContainer h5 {
+    margin-bottom: 10px;
+}
+
+#priceTable {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #e0e0e0;
+}
+
+#priceTable th, #priceTable td {
+    border: 1px solid #e0e0e0;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+#priceTable th {
+    background-color: #6200ea;
+    color: #ffffff;
+}
+
+#priceTable tr:nth-child(even) {
+    background-color: #f7f7f7;
+}
 
 
     </style>
@@ -139,6 +167,12 @@ h5:not(:empty) {
 <div class="container">
     <input type="file" id="svgInput" class="rounded" accept=".svg" style="display: none;">
     <h5 id="stitchCount"></h5>
+    <div id="priceTableContainer" class="hidden">
+    <h5>Pricing</h5>
+    <table id="priceTable">
+        <!-- Table content will be populated by JavaScript -->
+    </table>
+</div>
     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
         <div>
         <label for="widthSlider">Width: <span id="widthValue">3.5</span> inches</label>
@@ -244,6 +278,7 @@ h5:not(:empty) {
             const estimatedStitchCount = squareInchesCovered * 2500;
 
             document.getElementById('stitchCount').textContent = `Estimated Stitch Count: ${Math.round(estimatedStitchCount)}`;
+            displayPricing(estimatedStitchCount);
             resultDiv.textContent = `Coverage: ${coverage.toFixed(2)}%`;
             proportionalSizeDiv.textContent = `Size: ${widthInInches.toFixed(2)}" x ${proportionalHeight.toFixed(2)}"`;
         };
@@ -251,6 +286,55 @@ h5:not(:empty) {
 
     window.calculateCoverage = calculateCoverage; // Expose to global scope for inline event
 
+        function displayPricing(stitchCount) {
+    const table = document.getElementById('priceTable');
+    const container = document.getElementById('priceTableContainer');
+    let prices = [];
+
+    if (stitchCount >= 8000 && stitchCount <= 11999) {
+        prices = ["$8.75", "$7.50", "$7.00", "$6.00", "$5.50", "$5.00"];
+    } else if (stitchCount >= 12000 && stitchCount <= 15999) {
+        prices = ["$12.25", "$10.75", "$10.00", "$9.00", "$8.00", "$7.25"];
+    } else if (stitchCount >= 16000 && stitchCount <= 19999) {
+        prices = ["$15.75", "$14.00", "$13.25", "$11.75", "$10.50", "$9.50"];
+    } else if (stitchCount >= 20000 && stitchCount <= 23999) {
+        prices = ["$19.25", "$17.25", "$16.25", "$14.50", "$13.00", "$11.75"];
+    } else if (stitchCount >= 24000) {
+        prices = ["$22.75", "$20.50", "$19.25", "$17.00", "$15.25", "$14.00"];
+    }
+
+    if (prices.length) {
+        let content = `
+            <thead>
+                <tr>
+                    <th>STITCH COUNT</th>
+                    <th>1-5</th>
+                    <th>6-11</th>
+                    <th>12-23</th>
+                    <th>24-47</th>
+                    <th>48-96</th>
+                    <th>96+</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>${stitchCount}</td>
+                    <td>${prices[0]}</td>
+                    <td>${prices[1]}</td>
+                    <td>${prices[2]}</td>
+                    <td>${prices[3]}</td>
+                    <td>${prices[4]}</td>
+                    <td>${prices[5]}</td>
+                </tr>
+            </tbody>
+        `;
+        table.innerHTML = content;
+        container.classList.remove('hidden');
+    }
+}
+
+
+        
     // Load SVG from URL parameter
     const urlParams = new URLSearchParams(window.location.search);
     const svgUrl = urlParams.get('svg');
