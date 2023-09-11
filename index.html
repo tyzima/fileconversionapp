@@ -175,14 +175,12 @@
     window.calculateCoverage = calculateCoverage; // Expose to global scope for inline event
 
     // Load SVG from URL parameter
-const urlParams = new URLSearchParams(window.location.search);
-const svgUrl = urlParams.get('svg');
-if (svgUrl) {
-    svgPreview.src = svgUrl;
-    svgPreview.onload = function() {
-        calculateCoverage();
-    };
-}
+    const urlParams = new URLSearchParams(window.location.search);
+    const svgUrl = urlParams.get('svg');
+    if (svgUrl) {
+        svgPreview.src = svgUrl;
+    }
+});
 
 </script>
 </body>
