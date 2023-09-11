@@ -161,6 +161,12 @@ h5:not(:empty) {
     background-color: #f7f7f7;
 }
 
+        #tableWrapper {
+    border-radius: 15px;
+    overflow: hidden;
+    padding-bottom: 20px;
+}
+
 
     </style>
 </head>
@@ -169,9 +175,11 @@ h5:not(:empty) {
     <input type="file" id="svgInput" class="rounded" accept=".svg" style="display: none;">
     <h5 id="stitchCount"></h5>
     <div id="priceTableContainer" class="hidden">
+        <div id="tableWrapper">
     <table id="priceTable">
         <!-- Table content will be populated by JavaScript -->
     </table>
+        </div>
 </div>
     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
         <div>
