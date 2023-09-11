@@ -14,46 +14,41 @@
 
         /* Styling the slider track */
 /* Ensure a consistent width */
+#widthSlider {
+    -webkit-appearance: none; /* Override default appearance */
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
+}
+
 /* Styling the thumb for Webkit browsers */
 #widthSlider::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 24px; /* Adjust width for emoji */
-    height: 24px; /* Adjust height for emoji */
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: transparent; /* Make the background transparent */
+    background: #28a745;
     cursor: pointer;
-    position: relative; /* To position the pseudo-element */
-}
-
-/* Add the thread emoji */
-#widthSlider::-webkit-slider-thumb::before {
-    content: '🧵';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
 }
 
 #widthSlider::-moz-range-thumb {
-    width: 24px; /* Adjust width for emoji */
-    height: 24px; /* Adjust height for emoji */
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    background: transparent; /* Make the background transparent */
+    background: #28a745;
     cursor: pointer;
-    position: relative; /* To position the pseudo-element */
 }
 
-/* Add the thread emoji for Firefox */
-#widthSlider::-moz-range-thumb::before {
-    content: '🧵';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 20px;
+/* Handle the appearance of the slider track for Firefox */
+#widthSlider::-moz-range-track {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: #d3d3d3;
+    outline: none;
 }
-
 
 /* Fix for Webkit browsers to prevent thumb from clipping */
 #widthSlider::-webkit-slider-runnable-track {
