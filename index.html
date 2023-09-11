@@ -40,14 +40,19 @@
             width: 300px;
             margin-top: 1rem;
         }
+
+
+        #svgPreview {
+    display: none;
+}
+
+
     </style>
 </head>
 <body>
 <div class="container">
     <h1>SVG Approximate Coverage Calculator</h1>
-    <div id="dropzone" class="dropzone rounded">
-        Drag & Drop SVG Here
-    </div>
+    
     <input type="file" id="svgInput" class="rounded" accept=".svg" style="display: none;">
     <h5 id="stitchCount"></h5>
     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
@@ -58,6 +63,9 @@
     <button class="rounded" onclick="calculateCoverage()">Calculate Coverage</button>
     <div id="result" class="rounded" style="margin-top: 1rem;"></div>
     <div id="proportionalSize" class="rounded" style="margin-top: 1rem;"></div>
+    <div id="dropzone" class="dropzone rounded">
+        Drag & Drop SVG Here
+    </div>
 </div>
 
 <script>
@@ -103,6 +111,13 @@
             reader.onload = function(event) {
                 svgPreview.src = event.target.result;
             };
+            reader.onload = function(event) {
+    svgPreview.src = event.target.result;
+    svgPreview.onload = function() {
+        svgPreview.style.display = "block";
+    };
+};
+
             reader.readAsDataURL(file);
         }
     }
@@ -149,7 +164,7 @@
             const widthInInches = parseFloat(widthValueSpan.textContent);
             const proportionalHeight = (widthInInches / img.width) * img.height;
             const squareInchesCovered = (coverage / 100) * widthInInches * proportionalHeight;
-            const estimatedStitchCount = squareInchesCovered * 2000;
+            const estimatedStitchCount = squareInchesCovered * 2550;
 
             document.getElementById('stitchCount').textContent = `Estimated Stitch Count: ${Math.round(estimatedStitchCount)}`;
             resultDiv.textContent = `Approximate Coverage: ${coverage.toFixed(2)}%`;
@@ -160,12 +175,14 @@
     window.calculateCoverage = calculateCoverage; // Expose to global scope for inline event
 
     // Load SVG from URL parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const svgUrl = urlParams.get('svg');
-    if (svgUrl) {
-        svgPreview.src = svgUrl;
-    }
-});
+const urlParams = new URLSearchParams(window.location.search);
+const svgUrl = urlParams.get('svg');
+if (svgUrl) {
+    svgPreview.src = svgUrl;
+    svgPreview.onload = function() {
+        calculateCoverage();
+    };
+}
 
 </script>
 </body>
