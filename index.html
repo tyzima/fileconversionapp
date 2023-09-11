@@ -11,12 +11,15 @@
             margin: 2rem;
         }
 
-        h5 {
-    background-color: #28a745; /* Green background */
+    h5 {
     color: #ffffff;            /* White text */
     padding: 10px 15px;        /* Padding around the text */
     border-radius: 15px;       /* Rounded corners */
     display: inline-block;     /* So it wraps around content only */
+}
+
+h5:not(:empty) {
+    background-color: #28a745; /* Green background only when h5 is not empty */
 }
 
 
@@ -53,7 +56,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Stitch Count Estimator</h1>
+    <h1>🪡 Estimator</h1>
     <input type="file" id="svgInput" class="rounded" accept=".svg" style="display: none;">
     <h5 id="stitchCount"></h5>
     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
