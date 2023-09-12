@@ -81,11 +81,12 @@ h5:not(:empty) {
 #svgPreview {
   position: relative;
   z-index: 1;
-  transform: scale(0.34);  /* Scale down to 50% */
+  transform: scale(0.36);  /* Scale down to 50% */
   transform-origin: center;  /* Origin point for the scaling, centered */
 }
 
 #imageContainer::before {
+    border-radius: 10px;
   content: "";
   position: absolute;
   top: 0;
