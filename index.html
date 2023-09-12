@@ -185,12 +185,12 @@ h5:not(:empty) {
     </table>
         </div>
 </div>
-    <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
         <div>
         <label for="widthSlider">Width: <span id="widthValue">3.5</span> inches</label>
         <input type="range" id="widthSlider" min="0" max="7" value="3.5" step="0.1" onchange="updateWidthValue()">
     </div>
     <button class="roundedbutton" onclick="calculateCoverage()">Estimate Stitch Count</button>
+     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
     <div id="result" class="rounded" style="margin-top: 1rem;"></div>
     <div id="proportionalSize" class="rounded" style="margin-top: 1rem;"></div>
     <div id="dropzone" class="dropzone rounded">
