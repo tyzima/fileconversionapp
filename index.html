@@ -137,6 +137,7 @@ h5:not(:empty) {
     display: none;
 }
 
+/* Option 1: Modern & Clean */
 #priceTableContainer h5 {
     border-radius: 5px;
 }
@@ -144,23 +145,25 @@ h5:not(:empty) {
 #priceTable {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid #e0e0e0;
+    border: 2px solid #e0e0e0;
     border-radius: 5px;
+    box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
 }
 
 #priceTable th, #priceTable td {
     border: 1px solid #e0e0e0;
-    padding: 8px 12px;
+    padding: 12px 16px;
     text-align: center;
 }
 
 #priceTable th {
-    background-color: #afafaf;
+    background-color: #34495e;
     color: #ffffff;
+    font-weight: bold;
 }
 
 #priceTable tr:nth-child(even) {
-    background-color: #f7f7f7;
+    background-color: #ecf0f1;
 }
 
         #tableWrapper {
@@ -179,7 +182,7 @@ h5:not(:empty) {
     <h5 id="stitchCount"></h5>
     <div id="priceTableContainer" class="hidden">
           <div style="text-align: center; font-size: 12px; font-weight: 700; text-transform: uppercase; padding-bottom: 20px;">
-    Internal Pricing
+    Internal Pricing (Per Garment)
 </div>
         <div id="tableWrapper">
     <table id="priceTable">
