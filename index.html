@@ -227,7 +227,9 @@ h5:not(:empty) {
         <input type="range" id="widthSlider" min="0" max="7" value="3.5" step="0.1" onchange="updateWidthValue()">
     </div>
     <button class="roundedbutton" onclick="calculateCoverage()">Estimate Stitch Count</button>
-     <img id="svgPreview" class="preview rounded" alt="SVG Preview" />
+<div id="imageContainer">
+  <img id="svgPreview" class="preview rounded" alt="SVG Preview" src="https://res.cloudinary.com/laxdotcom/image/upload/v1663810522/0012I00002kqFL9/SVG.0012I00002kqFL9.7067.svg">
+</div>
     <div id="result" class="rounded" style="margin-top: 1rem;"></div>
     <div id="proportionalSize" class="rounded" style="margin-top: 1rem;"></div>
     <div id="dropzone" class="dropzone rounded">
