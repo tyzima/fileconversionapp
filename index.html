@@ -80,6 +80,8 @@ h5:not(:empty) {
 #svgPreview {
   position: relative;
   z-index: 1;
+  transform: scale(0.5);  /* Scale down to 50% */
+  transform-origin: center;  /* Origin point for the scaling, centered */
 }
 
 #imageContainer::before {
@@ -92,10 +94,11 @@ h5:not(:empty) {
   z-index: 0;
 
   background-image: url('https://swag-prod.s3.us-east-2.amazonaws.com/images/60355edd68cc1b1c2d911a28.jpg');
-  background-size: cover; /* Cover the entire container without overflowing */
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
+
 
 
         .container {
