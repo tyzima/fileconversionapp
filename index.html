@@ -14,6 +14,25 @@
 
         /* Styling the slider track */
 /* Ensure a consistent width */
+/* Select the button with the class "roundedbutton" and the text "Estimate Stitch Count" */
+button.roundedbutton:contains("Estimate Stitch Count") {
+  /* Button styles for the specific button */
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+/* Hover styles for the specific button */
+button.roundedbutton:contains("Estimate Stitch Count"):hover {
+  background-color: #607595; /* Color upon hover */
+  color: white; /* Text color upon hover, optional */
+}
+
+/* Active/Press styles for the specific button */
+button.roundedbutton:contains("Estimate Stitch Count"):active {
+  background-color: #506085; /* Slightly darker color upon press */
+  color: white; /* Text color upon press, optional */
+}
+
+        
 #widthSlider {
     -webkit-appearance: none; /* Override default appearance */
     width: 100%;
