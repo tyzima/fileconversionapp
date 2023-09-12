@@ -100,7 +100,7 @@ h5:not(:empty) {
         }
 
         .preview {
-            width: 100%;
+            width: 120px;
             padding-bottom: 50px;
             border-radius: 1px;
         }
@@ -233,32 +233,25 @@ h5:not(:empty) {
 
     svgInput.addEventListener('change', displaySVGPreview);
 
-  // Display SVG Preview
-function displaySVGPreview() {
-    const file = svgInput.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            svgPreview.src = event.target.result;
-            
-            // Adjust the SVG size based on the widthSlider value immediately after setting the source
-            updateWidthValue(); 
-        };
-        reader.readAsDataURL(file);
+    // Display SVG Preview
+    function displaySVGPreview() {
+        const file = svgInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                svgPreview.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
     }
-}
 
-  function updateWidthValue() {
-    const widthSlider = document.getElementById('widthSlider');
-    const widthValueSpan = document.getElementById('widthValue');
-    const svgPreview = document.getElementById('svgPreview');
+    // Update Width Value from Slider
+    function updateWidthValue() {
+        const widthSlider = document.getElementById('widthSlider');
+        widthValueSpan.textContent = widthSlider.value;
+    }
 
-    widthValueSpan.textContent = widthSlider.value;
-
-    const svgWidthInPixels = widthSlider.value * 96; // Convert inches to pixels at 96 DPI
-    svgPreview.style.width = `${svgWidthInPixels}px`;
-    svgPreview.style.height = 'auto';  // Maintain the aspect ratio
-}
+    window.updateWidthValue = updateWidthValue; // Expose to global scope for inline event
 
     // Calculate Coverage
     function calculateCoverage() {
