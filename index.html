@@ -72,30 +72,31 @@ h5:not(:empty) {
     background-color: #6fd199; /* Green background only when h5 is not empty */
 }
 
-        #imageContainer {
-  position: relative; /* Relative positioning for the container */
-  display: inline-block; /* To keep the container size as per the image */
+#imageContainer {
+  position: relative;
+  display: inline-block;
 }
 
 #svgPreview {
-  position: relative; /* Relative positioning for SVG */
-  z-index: 1; /* Higher z-index to keep it above the background */
+  position: relative;
+  z-index: 1;
 }
 
 #imageContainer::before {
   content: "";
-  position: absolute; /* Absolute positioning */
+  position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 0; /* Lower z-index to keep it below the SVG */
+  z-index: 0;
 
   background-image: url('https://swag-prod.s3.us-east-2.amazonaws.com/images/60355edd68cc1b1c2d911a28.jpg');
-  background-size: 200%; /* 200% of the SVG preview box */
-  background-position: center; /* Center the background */
-  background-repeat: no-repeat; /* No repeat */
+  background-size: cover; /* Cover the entire container without overflowing */
+  background-position: center;
+  background-repeat: no-repeat;
 }
+
 
         .container {
             display: flex;
